@@ -56,6 +56,9 @@ namespace TicTacToe
                     //jeœli s¹ takie same to wygrywa gracz który ma taki sam znak
                     //nie ma znaczenia z którego guzika pobieramy tekst
                     MessageBox.Show("Wygra³ gracz: " + TopLeft.Text);
+
+                    // zwracamy aby nie kontynuowaæ funkcji gdy¿ wygrany jest ju¿ znany
+                    return;
                 }
             }
             //sprawdzamy czy ¿aden z guzików w œrodkowym wierszu nie jest pusty
@@ -70,6 +73,8 @@ namespace TicTacToe
                     //jeœli s¹ takie same to wygrywa gracz który ma taki sam znak
                     //nie ma znaczenia z którego guzika pobieramy tekst
                     MessageBox.Show("Wygra³ gracz: " + CenterLeft.Text);
+                    
+                    return;
                 }
             }
             //sprawdzamy czy ¿aden z guzików w dolnym wierszu nie jest pusty
@@ -84,6 +89,8 @@ namespace TicTacToe
                     //jeœli s¹ takie same to wygrywa gracz który ma taki sam znak
                     //nie ma znaczenia z którego guzika pobieramy tekst
                     MessageBox.Show("Wygra³ gracz: " + BottomLeft.Text);
+                    
+                    return;
                 }
             }
             
@@ -96,6 +103,8 @@ namespace TicTacToe
                 if (TopLeft.Text == CenterLeft.Text && CenterLeft.Text == BottomLeft.Text)
                 {
                     MessageBox.Show("Wygra³ gracz: " + BottomLeft.Text);
+                    
+                    return;
                 }
             }
 
@@ -106,6 +115,8 @@ namespace TicTacToe
                 if (TopCenter.Text == CenterCenter.Text && CenterCenter.Text == BottomCenter.Text)
                 {
                     MessageBox.Show("Wygra³ gracz: " + BottomCenter.Text);
+
+                    return;
                 }
             }
 
@@ -116,6 +127,8 @@ namespace TicTacToe
                 if (TopRight.Text == CenterRight.Text && CenterRight.Text == BottomRight.Text)
                 {
                     MessageBox.Show("Wygra³ gracz: " + BottomRight.Text);
+
+                    return;
                 }
             }
 
@@ -128,6 +141,8 @@ namespace TicTacToe
                 if (TopLeft.Text == CenterCenter.Text && CenterCenter.Text == BottomRight.Text)
                 {
                     MessageBox.Show("Wygra³ gracz: " + BottomRight.Text);
+
+                    return;
                 }
             }
 
@@ -138,7 +153,30 @@ namespace TicTacToe
                 if (TopRight.Text == CenterCenter.Text && CenterCenter.Text == BottomLeft.Text)
                 {
                     MessageBox.Show("Wygra³ gracz: " + BottomLeft.Text);
+                    
+                    return;
                 }
+            }
+
+            // Remis -------
+
+            // gdy funkcja nie zosta³a zakoñczona przez return wczeœniej to oznacza, ¿e nikt nie wygra³
+            // jednak sprawdzamy czy wszystkie pola s¹ ju¿ zape³nione ¿eby upewniæ siê, ¿e ¿aden ruch nie jest ju¿ mo¿liwy
+            if(
+                TopRight.Text != String.Empty &&
+                CenterRight.Text != String.Empty &&
+                BottomRight.Text != String.Empty &&
+                TopCenter.Text != String.Empty &&
+                CenterCenter.Text != String.Empty &&
+                BottomCenter.Text != String.Empty &&
+                TopLeft.Text != String.Empty &&
+                CenterLeft.Text != String.Empty &&
+                BottomLeft.Text != String.Empty
+            )
+            {
+                MessageBox.Show("REMIS!");
+
+                return;
             }
         }
     }
