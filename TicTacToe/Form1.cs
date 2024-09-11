@@ -4,7 +4,7 @@ namespace TicTacToe
     {
         //aktywny gracz - zaczynaj¹ kó³ka
         char activePlayer = 'O';
-
+        
         public Form1()
         {
             InitializeComponent();
@@ -12,12 +12,18 @@ namespace TicTacToe
             ActivePlayerLabel.Text = "Aktywny gracz: " + activePlayer;
         }
 
-        void SwitchPlayer()
+        private void SetPlayer(char playerChar)
         {
             //zmieñ aktywnego gracza
-            activePlayer = (activePlayer == 'O') ? 'X' : 'O';
+            activePlayer = playerChar;
             //zmodyfikuj labelkê pokazuj¹c¹ aktywnego gracza
             ActivePlayerLabel.Text = "Aktywny gracz: " + activePlayer;
+        }
+
+        private void SwitchPlayer()
+        {
+            //zmieñ aktywnego gracza
+            SetPlayer(activePlayer == 'O' ? 'X' : 'O');
         }
 
         private void GameButtonClick(object sender, EventArgs e)
@@ -26,7 +32,7 @@ namespace TicTacToe
             Button button = (Button)sender;
 
             //jeœli na guziku jest ju¿ jakiœ napis to zakoñcz funkcjê
-            if(button.Text != "")
+            if (button.Text != "")
             {
                 return;
             }
@@ -42,7 +48,7 @@ namespace TicTacToe
         void CheckResult()
         {
             // Wiersze -------
-            
+
             //sprawdzamy najpierw wiersze
             //sprawdzamy czy ¿aden z guzików w górnym wierszu nie jest pusty
             if (TopLeft.Text != String.Empty &&
@@ -73,7 +79,7 @@ namespace TicTacToe
                     //jeœli s¹ takie same to wygrywa gracz który ma taki sam znak
                     //nie ma znaczenia z którego guzika pobieramy tekst
                     MessageBox.Show("Wygra³ gracz: " + CenterLeft.Text);
-                    
+
                     return;
                 }
             }
@@ -89,11 +95,11 @@ namespace TicTacToe
                     //jeœli s¹ takie same to wygrywa gracz który ma taki sam znak
                     //nie ma znaczenia z którego guzika pobieramy tekst
                     MessageBox.Show("Wygra³ gracz: " + BottomLeft.Text);
-                    
+
                     return;
                 }
             }
-            
+
             // Kolumny -------
 
             if (TopLeft.Text != String.Empty &&
@@ -103,7 +109,7 @@ namespace TicTacToe
                 if (TopLeft.Text == CenterLeft.Text && CenterLeft.Text == BottomLeft.Text)
                 {
                     MessageBox.Show("Wygra³ gracz: " + BottomLeft.Text);
-                    
+
                     return;
                 }
             }
@@ -153,7 +159,7 @@ namespace TicTacToe
                 if (TopRight.Text == CenterCenter.Text && CenterCenter.Text == BottomLeft.Text)
                 {
                     MessageBox.Show("Wygra³ gracz: " + BottomLeft.Text);
-                    
+
                     return;
                 }
             }
@@ -162,7 +168,7 @@ namespace TicTacToe
 
             // gdy funkcja nie zosta³a zakoñczona przez return wczeœniej to oznacza, ¿e nikt nie wygra³
             // jednak sprawdzamy czy wszystkie pola s¹ ju¿ zape³nione ¿eby upewniæ siê, ¿e ¿aden ruch nie jest ju¿ mo¿liwy
-            if(
+            if (
                 TopRight.Text != String.Empty &&
                 CenterRight.Text != String.Empty &&
                 BottomRight.Text != String.Empty &&
