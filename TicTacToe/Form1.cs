@@ -9,7 +9,7 @@ namespace TicTacToe
         {
             InitializeComponent();
             //zainicjuj labelkê pokazuj¹c¹ aktywnego gracza
-            ActivePlayerLabel.Text = "Aktywny gracz: " + activePlayer;
+            SetPlayer('O');
         }
 
         private void SetPlayer(char playerChar)
@@ -43,7 +43,6 @@ namespace TicTacToe
             //zmiana gracza
             SwitchPlayer();
             //zablokuj guzik
-            //button.Enabled = false;
         }
         void CheckResult()
         {
