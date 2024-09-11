@@ -1,30 +1,30 @@
 namespace TicTacToe
 {
-    public partial class Form1 : Form
+    public partial class RootForm : Form
     {
         //aktywny gracz - zaczynaj¹ kó³ka
-        char activePlayer = 'O';
+        ActivePlayer activePlayer;
         
-        public Form1()
+        public RootForm()
         {
             InitializeComponent();
-            //zainicjuj labelkê pokazuj¹c¹ aktywnego gracza
-            SetPlayer('O');
+
+            this.activePlayer = new ActivePlayer();
+            RefreshPlayer(false);
         }
 
-        private void SetPlayer(char playerChar)
+        public void RefreshPlayer(bool _switch)
         {
             //zmieñ aktywnego gracza
-            activePlayer = playerChar;
+            if (_switch)
+            {
+                this.activePlayer.SwitchPlayer();
+            }
+
             //zmodyfikuj labelkê pokazuj¹c¹ aktywnego gracza
-            ActivePlayerLabel.Text = "Aktywny gracz: " + activePlayer;
+            ActivePlayerLabel.Text = "Aktywny gracz: " + this.activePlayer.GetPlayerChar();
         }
 
-        private void SwitchPlayer()
-        {
-            //zmieñ aktywnego gracza
-            SetPlayer(activePlayer == 'O' ? 'X' : 'O');
-        }
 
         private void GameButtonClick(object sender, EventArgs e)
         {
@@ -37,11 +37,11 @@ namespace TicTacToe
                 return;
             }
             //zapisz do guzika aktywnego gracza 
-            button.Text = activePlayer.ToString();
+            button.Text = activePlayer.GetPlayerChar().ToString();
             //sprawdzamy czy ktoœ wygra³
             CheckResult();
             //zmiana gracza
-            SwitchPlayer();
+            RefreshPlayer(true);
             //zablokuj guzik
         }
 
@@ -179,8 +179,51 @@ namespace TicTacToe
                 button.Text = "";
             }
 
-            SetPlayer('O');
-            
+            this.activePlayer.SetPlayer(PlayerChar.Circle);
+        }
+    }
+
+
+    public enum PlayerChar
+    {
+        Circle,
+        Cross
+    }
+
+
+    public class ActivePlayer
+    {
+        private PlayerChar playerChar;
+
+        public ActivePlayer()
+        {
+            this.playerChar = PlayerChar.Circle;
+        }
+
+
+        public char GetPlayerChar()
+        {
+            return this.playerChar switch
+            {
+                PlayerChar.Circle => 'O',
+                PlayerChar.Cross => 'X'
+            };
+        }
+        
+
+        public void SwitchPlayer()
+        {
+            this.playerChar = this.playerChar switch
+            {
+                PlayerChar.Circle => PlayerChar.Cross,
+                PlayerChar.Cross => PlayerChar.Circle
+            };
+        }
+
+
+        public void SetPlayer(PlayerChar playerChar)
+        {
+            this.playerChar = playerChar;
         }
     }
 }
