@@ -66,119 +66,71 @@ namespace TicTacToe
         {
             // Wiersze -------
 
-            //sprawdzamy najpierw wiersze
-            //sprawdzamy czy ¿aden z guzików w górnym wierszu nie jest pusty
-            if (TopLeft.Text != String.Empty &&
-                TopCenter.Text != String.Empty &&
-                TopRight.Text != String.Empty)
+            
+            // sprawdzamy kombinacje górnego wiersza
+            if (CheckCombination(TopLeft, TopCenter, TopRight))
             {
-                //jeœli nie ma pustych sprawdzamy czy lewy i œrodkowy oraz
-                // œrodkowy i prawy s¹ takie same
-                if (TopLeft.Text == TopCenter.Text && TopCenter.Text == TopRight.Text)
-                {
-                    //jeœli s¹ takie same to wygrywa gracz który ma taki sam znak
-                    //nie ma znaczenia z którego guzika pobieramy tekst
-                    MessageBox.Show("Wygra³ gracz: " + TopLeft.Text);
-
-                    // zwracamy aby nie kontynuowaæ funkcji gdy¿ wygrany jest ju¿ znany
-                    return;
-                }
+                // Informujemy kto wygra³, nie jest wa¿ne sk¹d weŸmiemy znak wygranego
+                // wa¿ne aby to pole by³o czêœci¹ tej kombinacji
+                MessageBox.Show("Wygra³ gracz: " + TopLeft.Text);
+                return;
             }
-            //sprawdzamy czy ¿aden z guzików w œrodkowym wierszu nie jest pusty
-            if (CenterLeft.Text != String.Empty &&
-                CenterCenter.Text != String.Empty &&
-                CenterRight.Text != String.Empty)
+
+            // sprawdzamy kombinacje œrodkowego wiersza
+            if (CheckCombination(CenterLeft, CenterCenter, CenterRight))
             {
-                //jeœli nie ma pustych sprawdzamy czy lewy i œrodkowy oraz
-                // œrodkowy i prawy s¹ takie same
-                if (CenterLeft.Text == CenterCenter.Text && CenterCenter.Text == CenterRight.Text)
-                {
-                    //jeœli s¹ takie same to wygrywa gracz który ma taki sam znak
-                    //nie ma znaczenia z którego guzika pobieramy tekst
-                    MessageBox.Show("Wygra³ gracz: " + CenterLeft.Text);
-
-                    return;
-                }
+                MessageBox.Show("Wygra³ gracz: " + CenterLeft.Text);
+                return;
             }
-            //sprawdzamy czy ¿aden z guzików w dolnym wierszu nie jest pusty
-            if (BottomLeft.Text != String.Empty &&
-                BottomCenter.Text != String.Empty &&
-                BottomRight.Text != String.Empty)
+
+            // sprawdzamy kombinacje dolnego wiersza
+            if (CheckCombination(BottomLeft, BottomCenter, BottomRight))
             {
-                //jeœli nie ma pustych sprawdzamy czy lewy i œrodkowy oraz
-                // œrodkowy i prawy s¹ takie same
-                if (BottomLeft.Text == BottomCenter.Text && BottomCenter.Text == BottomRight.Text)
-                {
-                    //jeœli s¹ takie same to wygrywa gracz który ma taki sam znak
-                    //nie ma znaczenia z którego guzika pobieramy tekst
-                    MessageBox.Show("Wygra³ gracz: " + BottomLeft.Text);
-
-                    return;
-                }
+                MessageBox.Show("Wygra³ gracz: " + BottomLeft.Text);
+                return;
             }
+
 
             // Kolumny -------
 
-            if (TopLeft.Text != String.Empty &&
-                CenterLeft.Text != String.Empty &&
-                BottomLeft.Text != String.Empty)
-            {
-                if (TopLeft.Text == CenterLeft.Text && CenterLeft.Text == BottomLeft.Text)
-                {
-                    MessageBox.Show("Wygra³ gracz: " + BottomLeft.Text);
 
-                    return;
-                }
+            // sprawdzamy kombinacje lewej kolumny
+            if (CheckCombination(TopLeft, CenterLeft, BottomLeft))
+            {
+                MessageBox.Show("Wygra³ gracz: " + TopLeft.Text);
+                return;
             }
 
-            if (TopCenter.Text != String.Empty &&
-                CenterCenter.Text != String.Empty &&
-                BottomCenter.Text != String.Empty)
+            // sprawdzamy kombinacje œrodkowej kolumny
+            if (CheckCombination(TopCenter, CenterCenter, BottomCenter))
             {
-                if (TopCenter.Text == CenterCenter.Text && CenterCenter.Text == BottomCenter.Text)
-                {
-                    MessageBox.Show("Wygra³ gracz: " + BottomCenter.Text);
-
-                    return;
-                }
+                MessageBox.Show("Wygra³ gracz: " + TopCenter.Text);
+                return;
             }
 
-            if (TopRight.Text != String.Empty &&
-                CenterRight.Text != String.Empty &&
-                BottomRight.Text != String.Empty)
+            // sprawdzamy kombinacje prawej kolumny
+            if (CheckCombination(TopRight, CenterRight, BottomRight))
             {
-                if (TopRight.Text == CenterRight.Text && CenterRight.Text == BottomRight.Text)
-                {
-                    MessageBox.Show("Wygra³ gracz: " + BottomRight.Text);
-
-                    return;
-                }
+                MessageBox.Show("Wygra³ gracz: " + TopRight.Text);
+                return;
             }
+
 
             // Skosy -------
 
-            if (TopLeft.Text != String.Empty &&
-                CenterCenter.Text != String.Empty &&
-                BottomRight.Text != String.Empty)
-            {
-                if (TopLeft.Text == CenterCenter.Text && CenterCenter.Text == BottomRight.Text)
-                {
-                    MessageBox.Show("Wygra³ gracz: " + BottomRight.Text);
 
-                    return;
-                }
+            // sprawdzamy kombinacje skosu spadaj¹cego
+            if (CheckCombination(TopLeft, CenterCenter, BottomRight))
+            {
+                MessageBox.Show("Wygra³ gracz: " + TopLeft.Text);
+                return;
             }
 
-            if (TopRight.Text != String.Empty &&
-                CenterCenter.Text != String.Empty &&
-                BottomLeft.Text != String.Empty)
+            // sprawdzamy kombinacje skosu wzrastaj¹cego
+            if (CheckCombination(BottomLeft, CenterCenter, TopRight))
             {
-                if (TopRight.Text == CenterCenter.Text && CenterCenter.Text == BottomLeft.Text)
-                {
-                    MessageBox.Show("Wygra³ gracz: " + BottomLeft.Text);
-
-                    return;
-                }
+                MessageBox.Show("Wygra³ gracz: " + TopRight.Text);
+                return;
             }
 
             // Remis -------
