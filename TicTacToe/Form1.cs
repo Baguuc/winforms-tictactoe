@@ -1,10 +1,13 @@
+using System.Windows.Forms;
+
 namespace TicTacToe
 {
     public partial class RootForm : Form
     {
         //aktywny gracz - zaczynaj¹ kó³ka
         ActivePlayer activePlayer;
-        
+
+
         public RootForm()
         {
             InitializeComponent();
@@ -12,6 +15,12 @@ namespace TicTacToe
             this.activePlayer = new ActivePlayer();
             RefreshPlayer(false);
         }
+
+        public ActivePlayer GetActivePlayer()
+        {
+            return this.activePlayer;
+        }
+
 
         public void RefreshPlayer(bool _switch)
         {
@@ -22,30 +31,144 @@ namespace TicTacToe
             }
 
             //zmodyfikuj labelkê pokazuj¹c¹ aktywnego gracza
-            ActivePlayerLabel.Text = "Aktywny gracz: " + this.activePlayer.GetPlayerChar();
+            this.ActivePlayerLabel.Text = "Aktywny gracz: " + this.activePlayer.GetPlayerChar();
         }
 
 
-        private void GameButtonClick(object sender, EventArgs e)
+        public void RefreshGameGrid()
         {
-            //stwórz obiekt klasy button i rzutuj do niego zawartoœæ sender
-            Button button = (Button)sender;
+            this._GameGrid.Refresh();
+        }
 
-            //jeœli na guziku jest ju¿ jakiœ napis to zakoñcz funkcjê
-            if (button.Text != "")
+
+        public void ResetGameGrid()
+        {
+            this._GameGrid._Reset();
+        }
+    }
+
+
+    public enum PlayerChar
+    {
+        Circle,
+        Cross
+    }
+
+
+    public class ActivePlayer
+    {
+        private PlayerChar playerChar;
+
+        public ActivePlayer()
+        {
+            this.playerChar = PlayerChar.Circle;
+        }
+
+
+        public char GetPlayerChar()
+        {
+            return this.playerChar switch
             {
-                return;
-            }
-            //zapisz do guzika aktywnego gracza 
-            button.Text = activePlayer.GetPlayerChar().ToString();
+                PlayerChar.Circle => 'O',
+                PlayerChar.Cross => 'X'
+            };
+        }
+
+
+        public void SwitchPlayer()
+        {
+            this.playerChar = this.playerChar switch
+            {
+                PlayerChar.Circle => PlayerChar.Cross,
+                PlayerChar.Cross => PlayerChar.Circle
+            };
+        }
+
+
+        public void SetPlayer(PlayerChar playerChar)
+        {
+            this.playerChar = playerChar;
+        }
+    }
+
+
+    public class GameGrid : TableLayoutPanel
+    {
+        private RootForm Root;
+
+        private GameButton TopLeft;
+        private GameButton TopCenter;
+        private GameButton TopRight;
+        private GameButton CenterLeft;
+        private GameButton CenterCenter;
+        private GameButton CenterRight;
+        private GameButton BottomLeft;
+        private GameButton BottomCenter;
+        private GameButton BottomRight;
+
+
+        public GameGrid(RootForm root)
+        {
+            // Inicjalizacja -----------
+            this.Root = root;
+
+            // Style -----------
+            this.ColumnCount = 3;
+            this.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
+            this.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333359F));
+            this.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333359F));
+            this.Dock = DockStyle.Fill;
+            this.Location = new Point(0, 0);
+            this.Name = "tableLayoutPanel1";
+            this.RowCount = 4;
+            this.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
+            this.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
+            this.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
+            this.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
+            this.Size = new Size(537, 521);
+            this.TabIndex = 0;
+
+
+            // Komponenty -----------
+            this.TopLeft = new GameButton(this.Root);
+            this.Controls.Add(this.TopLeft, 0, 1);
+
+            this.TopCenter = new GameButton(this.Root);
+            this.Controls.Add(this.TopCenter, 1, 1);
+
+            this.TopRight = new GameButton(this.Root);
+            this.Controls.Add(this.TopRight, 2, 1);
+
+            this.CenterLeft = new GameButton(this.Root);
+            this.Controls.Add(this.CenterLeft, 0, 2);
+
+            this.CenterCenter = new GameButton(this.Root);
+            this.Controls.Add(this.CenterCenter, 1, 2);
+
+            this.CenterRight = new GameButton(this.Root);
+            this.Controls.Add(this.CenterRight, 2, 2);
+
+            this.BottomLeft = new GameButton(this.Root);
+            this.Controls.Add(this.BottomLeft, 0, 3);
+
+            this.BottomCenter = new GameButton(this.Root);
+            this.Controls.Add(this.BottomCenter, 1, 3);
+
+            this.BottomRight = new GameButton(this.Root);
+            this.Controls.Add(this.BottomRight, 2, 3);
+        }
+
+        public void Refresh()
+        {
             //sprawdzamy czy ktoœ wygra³
-            CheckResult();
+            this.CheckResult();
             //zmiana gracza
-            RefreshPlayer(true);
+            this.Root.RefreshPlayer(true);
             //zablokuj guzik
         }
 
-        private bool CheckCombination(Button button1, Button button2, Button button3)
+
+        public bool CheckCombination(GameButton button1, GameButton button2, GameButton button3)
         {
             //sprawdzamy czy ¿aden z guzików nie jest pusty
             if (button1.Text != String.Empty &&
@@ -62,13 +185,13 @@ namespace TicTacToe
             return false;
         }
 
-        void CheckResult()
+        public void CheckResult()
         {
             // Wiersze -------
 
-            
+
             // sprawdzamy kombinacje górnego wiersza
-            if (CheckCombination(TopLeft, TopCenter, TopRight))
+            if (CheckCombination(this.TopLeft, TopCenter, TopRight))
             {
                 // Informujemy kto wygra³, nie jest wa¿ne sk¹d weŸmiemy znak wygranego
                 // wa¿ne aby to pole by³o czêœci¹ tej kombinacji
@@ -155,75 +278,61 @@ namespace TicTacToe
             }
         }
 
-        private void ResetButtonClick(object sender, EventArgs e)
-        {
-            _Reset();
-        }
 
-        private void _Reset()
+        public void _Reset()
         {
             Button[] grid = {
-                TopRight,
-                CenterRight,
-                BottomRight,
-                TopCenter,
-                CenterCenter,
-                BottomCenter,
-                TopLeft,
-                CenterLeft,
-                BottomLeft
-            };
+            TopRight,
+            CenterRight,
+            BottomRight,
+            TopCenter,
+            CenterCenter,
+            BottomCenter,
+            TopLeft,
+            CenterLeft,
+            BottomLeft
+        };
 
             foreach (Button button in grid)
             {
                 button.Text = "";
             }
 
-            this.activePlayer.SetPlayer(PlayerChar.Circle);
-        }
-    }
-
-
-    public enum PlayerChar
-    {
-        Circle,
-        Cross
-    }
-
-
-    public class ActivePlayer
-    {
-        private PlayerChar playerChar;
-
-        public ActivePlayer()
-        {
-            this.playerChar = PlayerChar.Circle;
+            this.Root.GetActivePlayer().SetPlayer(PlayerChar.Circle);
         }
 
 
-        public char GetPlayerChar()
+        public class GameButton : Button
         {
-            return this.playerChar switch
+            private RootForm Root;
+
+            public GameButton(RootForm root)
             {
-                PlayerChar.Circle => 'O',
-                PlayerChar.Cross => 'X'
-            };
-        }
-        
+                this.Dock = DockStyle.Fill;
+                this.Location = new Point(3, 43);
+                this.Size = new Size(172, 154);
+                this.UseVisualStyleBackColor = true;
+                this.Click += this.HandleClick;
 
-        public void SwitchPlayer()
-        {
-            this.playerChar = this.playerChar switch
+
+                this.Root = root;
+            }
+
+
+            public void HandleClick(object sender, EventArgs e)
             {
-                PlayerChar.Circle => PlayerChar.Cross,
-                PlayerChar.Cross => PlayerChar.Circle
-            };
-        }
+                //stwórz obiekt klasy button i rzutuj do niego zawartoœæ sender
+                Button self = (Button)sender;
 
+                //jeœli na guziku jest ju¿ jakiœ napis to zakoñcz funkcjê
+                if (self.Text != "")
+                {
+                    return;
+                }
 
-        public void SetPlayer(PlayerChar playerChar)
-        {
-            this.playerChar = playerChar;
+                this.Text = this.Root.GetActivePlayer().GetPlayerChar().ToString();
+                this.Root.RefreshGameGrid();
+            }
         }
     }
 }
