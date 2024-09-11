@@ -44,6 +44,24 @@ namespace TicTacToe
             SwitchPlayer();
             //zablokuj guzik
         }
+
+        private bool CheckCombination(Button button1, Button button2, Button button3)
+        {
+            //sprawdzamy czy ¿aden z guzików nie jest pusty
+            if (button1.Text != String.Empty &&
+                button2.Text != String.Empty &&
+                button3.Text != String.Empty)
+            {
+                // jeœli nie ma pustych sprawdzamy czy wszystkie s¹ takie same
+                if (button1.Text == button2.Text && button2.Text == button3.Text)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         void CheckResult()
         {
             // Wiersze -------
