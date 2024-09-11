@@ -39,6 +39,7 @@
             BottomCenter = new Button();
             BottomRight = new Button();
             ActivePlayerLabel = new Label();
+            Reset = new Button();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -58,6 +59,7 @@
             tableLayoutPanel1.Controls.Add(BottomCenter, 1, 3);
             tableLayoutPanel1.Controls.Add(BottomRight, 2, 3);
             tableLayoutPanel1.Controls.Add(ActivePlayerLabel, 1, 0);
+            tableLayoutPanel1.Controls.Add(Reset, 2, 0);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -170,6 +172,16 @@
             ActivePlayerLabel.Text = "Aktywny gracz:";
             ActivePlayerLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
+            // Reset
+            // 
+            Reset.Location = new Point(360, 3);
+            Reset.Name = "Reset";
+            Reset.Size = new Size(75, 23);
+            Reset.TabIndex = 10;
+            Reset.Text = "Reset";
+            Reset.UseVisualStyleBackColor = true;
+            Reset.Click += ResetButtonClick;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -196,5 +208,6 @@
         private Button BottomCenter;
         private Button BottomRight;
         private Label ActivePlayerLabel;
+        private Button Reset;
     }
 }

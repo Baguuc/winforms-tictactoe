@@ -185,5 +185,33 @@ namespace TicTacToe
                 return;
             }
         }
+
+        private void ResetButtonClick(object sender, EventArgs e)
+        {
+            _Reset();
+        }
+
+        private void _Reset()
+        {
+            Button[] grid = {
+                TopRight,
+                CenterRight,
+                BottomRight,
+                TopCenter,
+                CenterCenter,
+                BottomCenter,
+                TopLeft,
+                CenterLeft,
+                BottomLeft
+            };
+
+            foreach (Button button in grid)
+            {
+                button.Text = "";
+            }
+
+            SetPlayer('O');
+            
+        }
     }
 }
