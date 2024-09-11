@@ -294,7 +294,7 @@ namespace TicTacToe
                 BottomLeft.Text != String.Empty
             )
             {
-                MessageBox.Show("REMIS!");
+                EndGame("REMIS!");
 
                 return;
             }
