@@ -52,7 +52,7 @@
             ResetButton.TabIndex = 10;
             ResetButton.Text = "Reset";
             ResetButton.UseVisualStyleBackColor = true;
-            ResetButton.Click += (object sender, EventArgs e) => ResetGameGrid();
+            ResetButton.Click += (object sender, EventArgs e) => Reset();
             _GameGrid.Controls.Add(ResetButton, 2, 0);
 
 

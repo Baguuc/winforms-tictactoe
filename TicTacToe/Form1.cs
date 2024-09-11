@@ -10,10 +10,7 @@ namespace TicTacToe
 
         public RootForm()
         {
-            InitializeComponent();
-
-            this.activePlayer = new ActivePlayer();
-            RefreshPlayer(false);
+            Reset();
         }
 
         public ActivePlayer GetActivePlayer()
@@ -41,9 +38,13 @@ namespace TicTacToe
         }
 
 
-        public void ResetGameGrid()
+        public void Reset()
         {
-            this._GameGrid._Reset();
+            this.Controls.Clear();
+            this.InitializeComponent();
+
+            this.activePlayer = new ActivePlayer();
+            RefreshPlayer(false);
         }
     }
 
@@ -167,6 +168,27 @@ namespace TicTacToe
             //zablokuj guzik
         }
 
+        public void EndGame(string message)
+        {
+
+            this.Controls.Clear();
+
+            Label EndLabel = new Label();
+            EndLabel.Text = message;
+            EndLabel.Dock = DockStyle.Fill;
+            EndLabel.TextAlign = ContentAlignment.MiddleCenter;
+            EndLabel.Font = new Font("Arial", 21, FontStyle.Bold);
+
+            this.Controls.Add(EndLabel, 1, 1);
+
+            Button ContinueButton = new Button();
+            ContinueButton.Text = "Kontynuuj";
+            ContinueButton.Anchor = AnchorStyles.None;
+            ContinueButton.Click += (object sender, EventArgs e) => this.Root.Reset();
+            
+            this.Controls.Add(ContinueButton, 1, 2);
+        }
+
 
         public bool CheckCombination(GameButton button1, GameButton button2, GameButton button3)
         {
@@ -195,21 +217,21 @@ namespace TicTacToe
             {
                 // Informujemy kto wygra³, nie jest wa¿ne sk¹d weŸmiemy znak wygranego
                 // wa¿ne aby to pole by³o czêœci¹ tej kombinacji
-                MessageBox.Show("Wygra³ gracz: " + TopLeft.Text);
+                EndGame("Wygra³ gracz: " + TopLeft.Text);
                 return;
             }
 
             // sprawdzamy kombinacje œrodkowego wiersza
             if (CheckCombination(CenterLeft, CenterCenter, CenterRight))
             {
-                MessageBox.Show("Wygra³ gracz: " + CenterLeft.Text);
+                EndGame("Wygra³ gracz: " + CenterLeft.Text);
                 return;
             }
 
             // sprawdzamy kombinacje dolnego wiersza
             if (CheckCombination(BottomLeft, BottomCenter, BottomRight))
             {
-                MessageBox.Show("Wygra³ gracz: " + BottomLeft.Text);
+                EndGame("Wygra³ gracz: " + BottomLeft.Text);
                 return;
             }
 
@@ -220,21 +242,21 @@ namespace TicTacToe
             // sprawdzamy kombinacje lewej kolumny
             if (CheckCombination(TopLeft, CenterLeft, BottomLeft))
             {
-                MessageBox.Show("Wygra³ gracz: " + TopLeft.Text);
+                EndGame("Wygra³ gracz: " + TopLeft.Text);
                 return;
             }
 
             // sprawdzamy kombinacje œrodkowej kolumny
             if (CheckCombination(TopCenter, CenterCenter, BottomCenter))
             {
-                MessageBox.Show("Wygra³ gracz: " + TopCenter.Text);
+                EndGame("Wygra³ gracz: " + TopCenter.Text);
                 return;
             }
 
             // sprawdzamy kombinacje prawej kolumny
             if (CheckCombination(TopRight, CenterRight, BottomRight))
             {
-                MessageBox.Show("Wygra³ gracz: " + TopRight.Text);
+                EndGame("Wygra³ gracz: " + TopRight.Text);
                 return;
             }
 
@@ -245,14 +267,14 @@ namespace TicTacToe
             // sprawdzamy kombinacje skosu spadaj¹cego
             if (CheckCombination(TopLeft, CenterCenter, BottomRight))
             {
-                MessageBox.Show("Wygra³ gracz: " + TopLeft.Text);
+                EndGame("Wygra³ gracz: " + TopLeft.Text);
                 return;
             }
 
             // sprawdzamy kombinacje skosu wzrastaj¹cego
             if (CheckCombination(BottomLeft, CenterCenter, TopRight))
             {
-                MessageBox.Show("Wygra³ gracz: " + TopRight.Text);
+                EndGame("Wygra³ gracz: " + TopRight.Text);
                 return;
             }
 
@@ -276,29 +298,6 @@ namespace TicTacToe
 
                 return;
             }
-        }
-
-
-        public void _Reset()
-        {
-            Button[] grid = {
-            TopRight,
-            CenterRight,
-            BottomRight,
-            TopCenter,
-            CenterCenter,
-            BottomCenter,
-            TopLeft,
-            CenterLeft,
-            BottomLeft
-        };
-
-            foreach (Button button in grid)
-            {
-                button.Text = "";
-            }
-
-            this.Root.GetActivePlayer().SetPlayer(PlayerChar.Circle);
         }
 
 
